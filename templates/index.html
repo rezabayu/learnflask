@@ -12,14 +12,35 @@
             <input type="text" name="content" placeholder="New task..." required>
             <button type="submit">Add Task</button>
         </form>
-        <ul>
-            {% for task in tasks %}
-            <li>{{ task.content }} 
-                <a href="{{ url_for('edit', id=task.id) }}">✏️ Edit</a> |
-                <a href="{{ url_for('delete', id=task.id) }}">🗑️ Delete</a>
-            </li>
-            {% endfor %}
-        </ul>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Task</th>
+                    <th>Submitted At</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+{% for task in tasks %}
+    <tr>
+        <td>{{ loop.index }}</td>   <!-- loop.index starts at 1, loop.index0 at 0 -->
+        <td>{{ task.content }}</td>
+        <td>
+            {% if task.timestamp %}
+                {{ task.timestamp.strftime('%Y-%m-%d %H:%M') }}
+            {% else %}
+                -
+            {% endif %}
+        </td>
+        <td>
+            <a href="{{ url_for('edit', id=task.id) }}">✏️ Edit</a>
+            <a href="{{ url_for('delete', id=task.id) }}" onclick="return confirm('Delete this task?')">🗑️ Delete</a>
+        </td>
+    </tr>
+{% endfor %}
+            </tbody>
+        </table>
     </div>
 </body>
 </html>

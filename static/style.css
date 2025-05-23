@@ -40,3 +40,42 @@ a {
     color: #ff4040;
     text-decoration: none;
 }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 8px 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background-color: #f4f4f4;
+}
+
+td a {
+    margin-right: 8px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+td a[href*="edit"] {
+    background: #eaf5ff;
+    color: #2274a5;
+}
+
+td a[href*="delete"] {
+    background: #ffefef;
+    color: #d7263d;
+}
+
+td a:hover {
+    opacity: 0.8;
+}

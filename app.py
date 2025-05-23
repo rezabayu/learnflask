@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -8,14 +10,24 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tasks.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 # Database model
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String(200), nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.now)
 
     def __repr__(self):
         return f"<Task {self.content}>"
+
+# with app.app_context():
+#     import datetime
+#     tasks_without_timestamp = Task.query.filter(Task.timestamp == None).all()
+#     saiki = datetime.datetime.now()
+#     for task in tasks_without_timestamp:
+#         task.timestamp = saiki
+#     db.session.commit()
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
