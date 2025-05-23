@@ -17,6 +17,8 @@ class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String(200), nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.now)
+    is_completed = db.Column(db.Boolean, default=False)
+    completed_at = db.Column(db.DateTime, nullable=True)
 
     def __repr__(self):
         return f"<Task {self.content}>"
@@ -58,6 +60,18 @@ def edit(id):
         return redirect(url_for('index'))
     
     return render_template('edit.html', task=task)
+
+@app.route('/toggle/<int:id>')
+def toggle(id):
+    task = Task.query.get_or_404(id)
+    if task.is_completed:
+        task.is_completed = False
+        task.completed_at = None
+    else:
+        task.is_completed = True
+        task.completed_at = datetime.now()
+    db.session.commit()
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     with app.app_context():

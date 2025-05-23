@@ -13,34 +13,56 @@
             <button type="submit">Add Task</button>
         </form>
         <table>
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Task</th>
-                    <th>Submitted At</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-{% for task in tasks %}
-    <tr>
-        <td>{{ loop.index }}</td>   <!-- loop.index starts at 1, loop.index0 at 0 -->
-        <td>{{ task.content }}</td>
-        <td>
-            {% if task.timestamp %}
-                {{ task.timestamp.strftime('%Y-%m-%d %H:%M') }}
-            {% else %}
-                -
-            {% endif %}
-        </td>
-        <td>
-            <a href="{{ url_for('edit', id=task.id) }}">✏️ Edit</a>
-            <a href="{{ url_for('delete', id=task.id) }}" onclick="return confirm('Delete this task?')">🗑️ Delete</a>
-        </td>
-    </tr>
-{% endfor %}
-            </tbody>
-        </table>
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Task</th>
+            <th>Submitted At</th>
+            <th>Completed?</th>
+            <th>Completed At</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in tasks %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>
+                <span class="{% if task.is_completed %}completed{% endif %}">
+        {{ task.content }}
+    </span>
+            </td>
+            <td>
+                {% if task.timestamp %}
+                    {{ task.timestamp.strftime('%Y-%m-%d %H:%M') }}
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+            <td>
+                <a href="{{ url_for('toggle', id=task.id) }}">
+                    {% if task.is_completed %}
+                        ✅
+                    {% else %}
+                        ⬜️
+                    {% endif %}
+                </a>
+            </td>
+            <td>
+                {% if task.completed_at %}
+                    {{ task.completed_at.strftime('%Y-%m-%d %H:%M') }}
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+            <td>
+                <a href="{{ url_for('edit', id=task.id) }}">✏️ Edit</a>
+                <a href="{{ url_for('delete', id=task.id) }}" onclick="return confirm('Delete this task?')">🗑️ Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
     </div>
 </body>
 </html>

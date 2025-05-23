@@ -79,3 +79,8 @@ td a[href*="delete"] {
 td a:hover {
     opacity: 0.8;
 }
+
+.completed {
+    text-decoration: line-through;
+    color: #888;
+}
